@@ -24,6 +24,11 @@ contract RandomWinnerGame is VRFConsumerBase, Ownable {
     // current game id
     uint256 public gameId;
 
+    /// Events
+    event GameStarted(uint256 gameId, uint8 maxPlayers, uint256 entryFee);
+    event PlayerEntered(address player, uint256 gameId);
+    event GameEnded(uint256 gameId, address winner, bytes32 requestId);
+
     
 
 }
