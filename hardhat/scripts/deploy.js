@@ -4,32 +4,34 @@
 // You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
-const {hre, ethers} = require("hardhat");
+const { ethers } = require("hardhat");
 require("dotenv").config({ path: ".env"});
-const { FEE, VRF_COORDINATOR, LINK_TOKEN, KEY_HASH } = require("../constants")
+const { FEE, VRF_COORDINATOR, LINK_TOKEN, KEY_HASH } = require("../constants");
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function main() {
+  console.log("deploying")
   // deploy contract
   const randomWinnerGame = await hre.ethers.deployContract(
     "RandomWinnerGame",
-    [VRF_COORDINATOR, LINK_TOKEN, KEY_HASH, FEE]
+    [VRF_COORDINATOR, LINK_TOKEN, FEE, KEY_HASH]
   );
-  
+
+  console.log("waiting for deployment")
   await randomWinnerGame.waitForDeployment();
   console.log("Contract deployed to:", randomWinnerGame.target);
 
   // Wait for etherscan to catch up
   console.log("Sleeping... wait for etherscan to catch up");
-  sleep(30 * 1000);
+  await sleep(30 * 1000);
 
   // verify the contract
   await hre.run("verify:verify", {
-    address: randomWinnerGame.address,
-    constructorArguments: [VRF_COORDINATOR, LINK_TOKEN, KEY_HASH, FEE],
+    address: randomWinnerGame.target,
+    constructorArguments: [VRF_COORDINATOR, LINK_TOKEN, FEE, KEY_HASH],
   });
 }
 
