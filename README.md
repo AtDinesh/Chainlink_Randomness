@@ -13,3 +13,5 @@ How is Chainlink VRF used ?
 In this project, we will be experimenting the randomness generation by chainlink.
 To do so, we build a simple lottery game which simply consist in choosing a random winner in each game.
 
+The `RandomWinnerGame` Contract is deployed at address 0x820CeE82c1CDBa721B8eD4022adc34135DEbEcDe on the Polygon PoS Mumbai testnet.
+The contract is verified on [Polygonscan](https://mumbai.polygonscan.com/address/0x820CeE82c1CDBa721B8eD4022adc34135DEbEcDe#code).
