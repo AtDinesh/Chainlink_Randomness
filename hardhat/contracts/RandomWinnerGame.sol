@@ -89,5 +89,20 @@ contract RandomWinnerGame is VRFConsumerBase, Ownable {
         }
     }
 
+
+    /**
+    * getRandomWinner requests a random winner from the VRF Coordinator
+    */
+    function getRandomWinner() private returns (bytes32 requestId){
+        // VRFConsumerBase we inherited has a LINK interface
+        // Make sure the contract has enough LINK to request for randomness
+        require(LINK.balanceOf(address(this)) >= fee, "Not enough LINK");
+        // Launch the request to the coordinator
+        // requestRandomness is a function of the ConsumerBaseVRF
+        return requestRandomness(keyHash, fee);
+    }
+
     
+
+
 }
