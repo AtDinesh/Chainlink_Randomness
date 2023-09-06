@@ -15,3 +15,7 @@ To do so, we build a simple lottery game which simply consist in choosing a rand
 
 The `RandomWinnerGame` Contract is deployed at address 0x820CeE82c1CDBa721B8eD4022adc34135DEbEcDe on the Polygon PoS Mumbai testnet.
 The contract is verified on [Polygonscan](https://mumbai.polygonscan.com/address/0x820CeE82c1CDBa721B8eD4022adc34135DEbEcDe#code).
+
+## Testing the LINK Oracle.
+In order to request for randomness, the smart contract needs some link token to be sent with the request.
+The contract can be funded with LINK on the [Chainlink Faucet](https://faucets.chain.link/mumbai) or the [Polygon Faucet](https://faucet.polygon.technology/).
