@@ -124,5 +124,6 @@ contract RandomWinnerGame is VRFConsumerBase, Ownable {
         gameStarted = false;
     }
 
-
+    receive() external payable {}
+    fallback() external payable {}
 }
