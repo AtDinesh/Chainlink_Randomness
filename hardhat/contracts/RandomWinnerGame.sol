@@ -64,7 +64,30 @@ contract RandomWinnerGame is VRFConsumerBase, Ownable {
         emit GameStarted(gameId, maxPlayers, entryFee);
     }
 
+    /**
+    joinGame is called by players to enter the game
+    The function is payable since players must pay fees at entry
+    Note: A plater can enter the same game several times. To disencourage this,
+    we could add a unrecoverable fee that goes to the smart contract.
+    */
+    function joinGame() public payable {
+        // Check if the game is started
+        require(!gameStarted, "Game already started");
+        // Check if the value sent by the user matches the entryFee;
+        require(msg.value == entryFee, "Entry fee is incorrect");
+        // Check if there is place left in the game
+        require(players.length < maxPlayers, "Game is full");
+        
+        // Add the player to the game
+        players.push(msg.sender);
+        // Emit the event
+        emit PlayerEntered(msg.sender, gameId);
 
+        // Once the maxPlayers is reached, launch the game
+        if (players.length == maxPlayers) {
+            getRandomWinner();
+        }
+    }
 
-
+    
 }
