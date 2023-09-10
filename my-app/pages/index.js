@@ -34,7 +34,10 @@ export default function Home() {
   // required ref to Web3Modal to connect metamask
   const web3ModalRef = useRef();
 
-  
+  // force react to re render the page if needed.
+  // This is used here to show new logs
+  const forceUpdate = react.useReducer(() => ({}), {})[1];
+
   /** Helper function
    * Returns a Provider or Signer object representing the Ethereum RPC with or without the
    * signing capabilities of metamask attached
@@ -169,6 +172,7 @@ export default function Home() {
       setLogs(_logs);
       setPlayers(_game.players);
       setGameStarted(_gameStarted);
+      forceUpdate();
     } catch (error) {
       console.error(error);
     }
