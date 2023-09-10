@@ -7,6 +7,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Web3Modal from "web3modal";
 import { FETCH_CREATED_GAME } from "@/queries";
 import { abi, RANDOM_GAME_CONTRACT_ADDRESS } from "../constants";
+import { subgraphQuery } from "@/utils";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -125,5 +126,52 @@ export default function Home() {
     }
   };
 
-  
+
+  // checkIfGameStarted checks if the game has started and initializes the logs for the game.
+  const checkIfGameStarted = async () => {
+    try {
+      // Get the provider
+      const provider = getProviderOrSigner(false);
+      // Connect to the contract
+      const randomGameContract = new Contract(
+        RANDOM_GAME_CONTRACT_ADDRESS,
+        abi,
+        provider
+      );
+      // read gameStarted boolean from contract
+      const _gameStarted = await randomGameContract.gameStarted();
+
+      // query the latest game
+      const _gameArray = await subgraphQuery(FETCH_CREATED_GAME());
+      const _game = _gameArray[0];
+
+      // Initialize the logs
+      let _logs = [];
+      if (_gameStarted) {
+        _logs = [`Game has started with ID: ${_game.id}`];
+        if (_game.players && _game.players.length > 0) {
+          _logs.push(`${_game.players.length} / ${game.maxPlayers} joined the game`);
+          _game.players.forEach((player) => {
+          _logs.push(`${player} joined !`);
+          });
+        }
+        setEntryFee(BigNumber.from(_game.entryFee));
+        setMaxPlayers(_game.maxPlayers);
+      } else if (!_gameStarted && _game.winner) { // game ended and there is a winner
+        _logs = [
+          `Last game with ID ${_game.id} has ended`,
+          `Winner is: ${_game.winner}`,
+          `Wait for a new game to start...`
+        ];
+
+        setWinner(_game.winner);
+      }
+      setLogs(_logs);
+      setPlayers(_game.players);
+      setGameStarted(_gameStarted);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 }
