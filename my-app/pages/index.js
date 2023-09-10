@@ -223,5 +223,73 @@ export default function Home() {
     }
   }, [walletConnected]);
 
-  
+  // renderButton: renders a button based on the state of the dApp
+  const renderButton = () => {
+    // If wallet not connected, return a connect Wallet button
+    if (!walletConnected) {
+      return (
+        <button onClick={connectWallet} className={styles.button}>
+          Connect your wallet
+        </button>
+      );
+    }
+
+    // if dApp in Loading staten return loading button with no action
+    if (loading) {
+      return(
+        <button className={styles.button}>Loading...</button>
+      );
+    }
+
+    // If the game has started, give ability to join or not
+    if (gameStarted) {
+      if (players.length === maxPlayers) {
+        return(
+          <button className={styles.button} disabled>Game is full. Picking a winner...</button>
+        );
+      }
+      // if there is place left, users can join the game
+      return(
+        <div>
+          <button className={styles.button} onClick={joinGame}>
+            Join Game
+          </button>
+        </div>
+      );
+    }
+
+    // if there is no game started, the owner can create a game
+    if (isOwner && !gameStarted) {
+      return(
+        // Create the input for setting game parameters
+        <div>
+          <input
+            type="number"
+            className={styles.input}
+            onChange={(e) => {
+              setEntryFee(
+                e.target.value >= 0 ? utils.parseEther(e.target.value.toString()) : zero
+              );
+            }}
+            placeholder="Entry Fee (in ETH)"
+          />
+
+          <input
+            type="number"
+            className={styles.input}
+            onChange={(e) => {
+              setMaxPlayers(
+                e.target.value >= 2 ? utils.parseInteger(e.target.value.toString()) : 0
+              );
+            }}
+            placeholder="Max Players"
+          />
+
+          <button className={styles.button} onClick={startGame}>
+            Start a new game !
+          </button>
+        </div>
+      );
+    }
+  };
 }
