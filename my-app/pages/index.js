@@ -103,4 +103,27 @@ export default function Home() {
 
 
   // joinGame is called by a player to join a game
+  const joinGame = async () => {
+    try {
+      // Get the signer
+      const signer = await getProviderOrSigner(true);
+      // Connect to contract
+      const randomGameContract = new Contract(
+        RANDOM_GAME_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+
+      setLoading(true);
+      // Call the joinGame function of the contract
+      const tx = await randomGameContract.joinGame({value: entryFee});
+      await tx.wait();
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+    }
+  };
+
+  
 }
