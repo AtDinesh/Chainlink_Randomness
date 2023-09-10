@@ -40,3 +40,8 @@ The Graph can be used to track events emitted from smart contracts and write cus
 - The `startBlock` field in `subgraph.yaml` must be updated to the block in which the contract (RandomWinnerGame) was deployed, which can be retrieved on PolygonScan.
 - Create needed `Entities` in `schema.graphql` and use `yarn codegen` to auto-generate large chunk of related code.
 - Then, the `src/name-of-contract.ts` file needs to be updated to  store data when evens come in.
+
+## Front-end
+We also build a front-end to interact with the dApp. The front-end will be using:
+- Web3Modal: a library to help developers add support for multiple providers
+- Axios: that is used to send request to the graph.
