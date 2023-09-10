@@ -178,4 +178,31 @@ export default function Home() {
     }
   };
 
+  // getOwner retrieves the owner of the contract
+  const getOwner = async () => {
+    try {
+      // Get the provider
+      const provider = getProviderOrSigner(false);
+      // Connect to the contract
+      const randomGameContract = new Contract(
+        RANDOM_GAME_CONTRACT_ADDRESS,
+        abi,
+        provider
+      );
+      
+      // call the owner function of the contract
+      const _owner = randomGameContract.owner();
+      // get the Signer to extract the address of currently connected address
+      const signer = getProviderOrSigner(true);
+      const connectedAddress = await signer.getAddress();
+      if (connectedAddress.toLowerCase() === _owner.toLowerCase()) {
+        setIsOwner(true);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  
+
 }
