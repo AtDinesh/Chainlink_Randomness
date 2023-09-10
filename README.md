@@ -37,3 +37,6 @@ The Graph can be used to track events emitted from smart contracts and write cus
 - Configure the graph access token by getting it from the dashboard. `graph auth --product hosted-service ACCESS_TOKEN`
 - deploy the graph: `cd graph && yarn deploy` or `npm run deploy`
 - You should be able to see the graph from [The Graph's Hosted Service](https://thegraph.com/hosted-service/)
+- The `startBlock` field in `subgraph.yaml` must be updated to the block in which the contract (RandomWinnerGame) was deployed, which can be retrieved on PolygonScan.
+- Create needed `Entities` in `schema.graphql` and use `yarn codegen` to auto-generate large chunk of related code.
+- Then, the `src/name-of-contract.ts` file needs to be updated to  store data when evens come in.
