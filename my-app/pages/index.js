@@ -203,6 +203,25 @@ export default function Home() {
     }
   };
 
-  
+  // use useEffect to react to changes in state of the website
+  useEffect(() => {
+    // if wallet not connected, create instance of web3Modal for connection
+    if (!walletConnected) {
+      web3ModalRef.current = new Web3Modal({
+        network: "mumbai",
+        providerOptions: {},
+        disableInjectedProvider: false,
+      });
+      connectWallet();
+      // Once connected, get info about owner and games to initialize states
+      getOwner();
+      checkIfGameStarted();
+      // keep checking if a new game has started
+      setInterval(() => {
+        checkIfGameStarted();
+      }, 2000);
+    }
+  }, [walletConnected]);
 
+  
 }
