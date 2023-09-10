@@ -2,6 +2,7 @@
 import axios from "axios";
 export async function subgraphQuery(query) {
     try {
+        console.log(`creating new query`)
         const SUBGRAPH_URL = "https://api.thegraph.com/subgraphs/name/atdinesh/learningweb3"
         const response = await axios.post(SUBGRAPH_URL, { query });
 

@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import React, { useEffect, useState, useRef } from "react";
+import react, { useEffect, useState, useRef } from "react";
 import Web3Modal from "web3modal";
 import { FETCH_CREATED_GAME } from "@/queries";
 import { abi, RANDOM_GAME_CONTRACT_ADDRESS } from "../constants";
@@ -134,7 +134,7 @@ export default function Home() {
   const checkIfGameStarted = async () => {
     try {
       // Get the provider
-      const provider = getProviderOrSigner(false);
+      const provider = await getProviderOrSigner(false);
       // Connect to the contract
       const randomGameContract = new Contract(
         RANDOM_GAME_CONTRACT_ADDRESS,
@@ -153,7 +153,7 @@ export default function Home() {
       if (_gameStarted) {
         _logs = [`Game has started with ID: ${_game.id}`];
         if (_game.players && _game.players.length > 0) {
-          _logs.push(`${_game.players.length} / ${game.maxPlayers} joined the game`);
+          _logs.push(`${_game.players.length} / ${_game.maxPlayers} joined the game`);
           _game.players.forEach((player) => {
           _logs.push(`${player} joined !`);
           });
@@ -182,7 +182,7 @@ export default function Home() {
   const getOwner = async () => {
     try {
       // Get the provider
-      const provider = getProviderOrSigner(false);
+      const provider = await getProviderOrSigner(false);
       // Connect to the contract
       const randomGameContract = new Contract(
         RANDOM_GAME_CONTRACT_ADDRESS,
@@ -191,9 +191,9 @@ export default function Home() {
       );
       
       // call the owner function of the contract
-      const _owner = randomGameContract.owner();
+      const _owner = await randomGameContract.owner();
       // get the Signer to extract the address of currently connected address
-      const signer = getProviderOrSigner(true);
+      const signer = await getProviderOrSigner(true);
       const connectedAddress = await signer.getAddress();
       if (connectedAddress.toLowerCase() === _owner.toLowerCase()) {
         setIsOwner(true);
@@ -279,7 +279,7 @@ export default function Home() {
             className={styles.input}
             onChange={(e) => {
               setMaxPlayers(
-                e.target.value >= 2 ? utils.parseInteger(e.target.value.toString()) : 0
+                e.target.value >= 2 ? e.target.value : 0
               );
             }}
             placeholder="Max Players"
@@ -295,11 +295,11 @@ export default function Home() {
 
   return (
     <div>
-      <head>
+      <Head>
         <title> LuckyGame </title>
         <meta name="descritpion" content="Lucky Game dApp" />
         <link rel="icon" href="/favicon.ico" />
-      </head>
+      </Head>
       <div className={styles.main}>
         <div>
           <h1 className={styles.title}> Welcome to the Random Winner Game </h1>
@@ -316,7 +316,7 @@ export default function Home() {
           ))}
         </div>
         <div>
-          <img className={styles.image} src="./randomWinner.png" alt="lucky" />
+          <img className={styles.image} src="./randomWInner.png"/>
         </div>
       </div>
 
