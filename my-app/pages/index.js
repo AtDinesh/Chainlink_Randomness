@@ -292,4 +292,35 @@ export default function Home() {
       );
     }
   };
+
+  return (
+    <div>
+      <head>
+        <title> LuckyGame </title>
+        <meta name="descritpion" content="Lucky Game dApp" />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <div className={styles.main}>
+        <div>
+          <h1 className={styles.title}> Welcome to the Random Winner Game </h1>
+          <div className={styles.description}>
+            Here you can take part to a lottery game where the winner is 
+            chosen randomly. It's a winner takes all game in which the lucky winner
+            collects all the entry fees !
+          </div>
+          {renderButton()}
+          {logs && logs.map((log, index) => (
+            <div className={styles.log} key={index}>
+              {log}
+            </div>
+          ))}
+        </div>
+        <div>
+          <img className={styles.image} src="./randomWinner.png" alt="lucky" />
+        </div>
+      </div>
+
+      <footer className={styles.footer}> Made for learning purposes </footer>
+    </div>
+  );
 }
