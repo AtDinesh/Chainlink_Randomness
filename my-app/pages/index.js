@@ -6,7 +6,7 @@ import styles from '@/styles/Home.module.css'
 import React, { useEffect, useState, useRef } from "react";
 import Web3Modal from "web3modal";
 import { FETCH_CREATED_GAME } from "@/queries";
-import { abi, RANDOM_GAME_NFT_CONTRACT_Address } from "../constants";
+import { abi, RANDOM_GAME_CONTRACT_ADDRESS } from "../constants";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -78,4 +78,29 @@ export default function Home() {
   }
 
 
+  // startGame is called by the owner of the contract to start a new game
+  const startGame = async () => {
+    try {
+      // Get the signer
+      const signer = await getProviderOrSigner(true);
+      // Connect to contract: signer needs to sign transaction to start new game
+      const randomGameContract = new Contract(
+        RANDOM_GAME_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      setLoading(true);
+
+      // Call the startGame function of the contract
+      const tx = await randomGameContract.startGame(maxPlayers, entryFee);
+      await tx.wait();
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+    }
+  };
+
+
+  // joinGame is called by a player to join a game
 }
